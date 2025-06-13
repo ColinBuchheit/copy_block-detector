@@ -1,821 +1,172 @@
-<!-- FILE: options/options.html -->
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
   <title>CopyBlock Detector - Settings</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-      min-height: 100vh;
-      color: #333;
-      line-height: 1.6;
-    }
-
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 40px 20px;
-    }
-
-    .header {
-      text-align: center;
-      margin-bottom: 40px;
-    }
-
-    .header h1 {
-      font-size: 36px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 10px;
-      font-weight: 700;
-    }
-
-    .header p {
-      color: #666;
-      font-size: 18px;
-      font-weight: 300;
-    }
-
-    .settings-card {
-      background: white;
-      border-radius: 20px;
-      padding: 35px;
-      margin-bottom: 30px;
-      box-shadow: 0 15px 50px rgba(0,0,0,0.08);
-      border: 1px solid rgba(255,255,255,0.2);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .settings-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.12);
-    }
-
-    .settings-card h2 {
-      font-size: 24px;
-      margin-bottom: 25px;
-      color: #333;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-weight: 600;
-      border-bottom: 2px solid #f0f0f0;
-      padding-bottom: 15px;
-    }
-
-    .setting-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 0;
-      border-bottom: 1px solid #f8f9fa;
-      transition: background-color 0.3s ease;
-    }
-
-    .setting-item:hover {
-      background-color: #fafbfc;
-      margin: 0 -20px;
-      padding-left: 20px;
-      padding-right: 20px;
-      border-radius: 8px;
-    }
-
-    .setting-item:last-child {
-      border-bottom: none;
-    }
-
-    .setting-info {
-      flex: 1;
-      margin-right: 20px;
-    }
-
-    .setting-title {
-      font-weight: 600;
-      margin-bottom: 8px;
-      font-size: 16px;
-      color: #2d3748;
-    }
-
-    .setting-description {
-      font-size: 14px;
-      color: #718096;
-      line-height: 1.5;
-    }
-
-    .toggle-switch {
-      position: relative;
-      width: 60px;
-      height: 32px;
-      background: #e2e8f0;
-      border-radius: 16px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
-    }
-
-    .toggle-switch.active {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-    }
-
-    .toggle-switch::after {
-      content: '';
-      position: absolute;
-      top: 3px;
-      left: 3px;
-      width: 26px;
-      height: 26px;
-      background: white;
-      border-radius: 50%;
-      transition: all 0.3s ease;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-    }
-
-    .toggle-switch.active::after {
-      transform: translateX(28px);
-      box-shadow: 0 2px 12px rgba(0,0,0,0.2);
-    }
-
-    .whitelist-section {
-      margin-top: 25px;
-    }
-
-    .whitelist-input-group {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 20px;
-    }
-
-    .whitelist-input {
-      flex: 1;
-      padding: 14px 16px;
-      border: 2px solid #e2e8f0;
-      border-radius: 10px;
-      font-size: 15px;
-      transition: all 0.3s ease;
-      background: #f7fafc;
-    }
-
-    .whitelist-input:focus {
-      outline: none;
-      border-color: #667eea;
-      background: white;
-      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-    }
-
-    .add-btn {
-      padding: 14px 24px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 15px;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
-    }
-
-    .add-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-    }
-
-    .add-btn:active {
-      transform: translateY(0);
-    }
-
-    .whitelist-items {
-      max-height: 300px;
-      overflow-y: auto;
-      border: 2px solid #e2e8f0;
-      border-radius: 12px;
-      background: #f7fafc;
-    }
-
-    .whitelist-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 16px 20px;
-      border-bottom: 1px solid #e2e8f0;
-      transition: background-color 0.3s ease;
-    }
-
-    .whitelist-item:hover {
-      background-color: #edf2f7;
-    }
-
-    .whitelist-item:last-child {
-      border-bottom: none;
-    }
-
-    .remove-btn {
-      background: #fed7d7;
-      color: #c53030;
-      border: 1px solid #feb2b2;
-      border-radius: 6px;
-      padding: 6px 12px;
-      cursor: pointer;
-      font-size: 12px;
-      font-weight: 600;
-      transition: all 0.3s ease;
-    }
-
-    .remove-btn:hover {
-      background: #fc8181;
-      color: white;
-      border-color: #fc8181;
-    }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 25px;
-      margin-top: 25px;
-    }
-
-    .stat-card {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      padding: 25px;
-      border-radius: 16px;
-      text-align: center;
-      box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
-      transition: transform 0.3s ease;
-    }
-
-    .stat-card:hover {
-      transform: translateY(-5px);
-    }
-
-    .stat-number {
-      font-size: 36px;
-      font-weight: bold;
-      margin-bottom: 8px;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    }
-
-    .stat-label {
-      font-size: 14px;
-      opacity: 0.9;
-      font-weight: 500;
-    }
-
-    .export-btn, .import-btn, .reset-btn {
-      padding: 14px 28px;
-      margin: 8px;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 15px;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    }
-
-    .export-btn {
-      background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
-      color: white;
-    }
-
-    .export-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(72, 187, 120, 0.4);
-    }
-
-    .import-btn {
-      background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
-      color: white;
-    }
-
-    .import-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(66, 153, 225, 0.4);
-    }
-
-    .reset-btn {
-      background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
-      color: white;
-    }
-
-    .reset-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(245, 101, 101, 0.4);
-    }
-
-    .file-input {
-      display: none;
-    }
-
-    .toast {
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      background: #2d3748;
-      color: white;
-      padding: 16px 24px;
-      border-radius: 12px;
-      transform: translateY(100px);
-      transition: transform 0.3s ease;
-      z-index: 1000;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-      font-weight: 500;
-    }
-
-    .toast.show {
-      transform: translateY(0);
-    }
-
-    .toast.success {
-      background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
-    }
-
-    .toast.error {
-      background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
-    }
-
-    .empty-state {
-      padding: 40px 20px;
-      text-align: center;
-      color: #718096;
-      font-style: italic;
-    }
-
-    .section-description {
-      margin-bottom: 25px;
-      color: #4a5568;
-      font-size: 15px;
-      line-height: 1.6;
-      background: #f7fafc;
-      padding: 15px 20px;
-      border-radius: 8px;
-      border-left: 4px solid #667eea;
-    }
-
-    .advanced-section {
-      border-top: 2px solid #e2e8f0;
-      margin-top: 30px;
-      padding-top: 25px;
-    }
-
-    .danger-zone {
-      background: linear-gradient(135deg, #fed7d7 0%, #feb2b2 100%);
-      border: 2px solid #fc8181;
-    }
-
-    .danger-zone h2 {
-      color: #c53030;
-    }
-
-    @media (max-width: 768px) {
-      .container {
-        padding: 20px 15px;
-      }
-
-      .settings-card {
-        padding: 25px 20px;
-      }
-
-      .header h1 {
-        font-size: 28px;
-      }
-
-      .stats-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .whitelist-input-group {
-        flex-direction: column;
-      }
-
-      .add-btn {
-        width: 100%;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="options.css">
 </head>
 <body>
   <div class="container">
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" id="themeToggle" title="Toggle theme">
+      <span id="themeIcon">🌙</span>
+    </button>
+
+    <!-- Header -->
     <div class="header">
-      <h1>🛡️ CopyBlock Detector Settings</h1>
-      <p>Configure your copy protection and privacy settings</p>
+      <div class="header-content">
+        <h1>🐬 CopyBlock Detector Settings</h1>
+        <p>Configure your copy protection and privacy settings</p>
+      </div>
+      <div class="wave-decoration"></div>
     </div>
 
-    <div class="settings-card">
-      <h2>🔧 General Settings</h2>
-      
-      <div class="setting-item">
-        <div class="setting-info">
-          <div class="setting-title">Auto-enable copy on detection</div>
-          <div class="setting-description">Automatically remove copy restrictions when detected on any website</div>
+    <!-- Main Content -->
+    <div class="content">
+      <!-- General Settings Card -->
+      <div class="settings-card">
+        <div class="card-header">
+          <h2>🔧 General Settings</h2>
+          <p>Configure how the extension behaves on websites</p>
         </div>
-        <div class="toggle-switch" id="autoEnable"></div>
-      </div>
+        
+        <div class="setting-item">
+          <div class="setting-info">
+            <div class="setting-title">Auto-enable copy on detection</div>
+            <div class="setting-description">Automatically remove copy restrictions when detected on any website</div>
+          </div>
+          <div class="toggle-switch" id="autoEnable"></div>
+        </div>
 
-      <div class="setting-item">
-        <div class="setting-info">
-          <div class="setting-title">Show notifications</div>
-          <div class="setting-description">Display desktop notifications when restrictions are found or removed</div>
+        <div class="setting-item">
+          <div class="setting-info">
+            <div class="setting-title">Show notifications</div>
+            <div class="setting-description">Display desktop notifications when restrictions are found or removed</div>
+          </div>
+          <div class="toggle-switch active" id="showNotifications"></div>
         </div>
-        <div class="toggle-switch active" id="showNotifications"></div>
-      </div>
 
-      <div class="setting-item">
-        <div class="setting-info">
-          <div class="setting-title">Privacy tracking alerts</div>
-          <div class="setting-description">Alert when websites monitor your copy/paste actions or clipboard access</div>
+        <div class="setting-item">
+          <div class="setting-info">
+            <div class="setting-title">Privacy tracking alerts</div>
+            <div class="setting-description">Alert when websites monitor your copy/paste actions or clipboard access</div>
+          </div>
+          <div class="toggle-switch active" id="trackingAlerts"></div>
         </div>
-        <div class="toggle-switch active" id="trackingAlerts"></div>
-      </div>
 
-      <div class="setting-item">
-        <div class="setting-info">
-          <div class="setting-title">Run on all frames</div>
-          <div class="setting-description">Check for restrictions in embedded content, iframes, and advertisements</div>
+        <div class="setting-item">
+          <div class="setting-info">
+            <div class="setting-title">Run on all frames</div>
+            <div class="setting-description">Check for restrictions in embedded content, iframes, and advertisements</div>
+          </div>
+          <div class="toggle-switch active" id="allFrames"></div>
         </div>
-        <div class="toggle-switch active" id="allFrames"></div>
-      </div>
 
-      <div class="setting-item">
-        <div class="setting-info">
-          <div class="setting-title">Advanced detection</div>
-          <div class="setting-description">Enable deep scanning for sophisticated blocking methods and tracking</div>
-        </div>
-        <div class="toggle-switch" id="advancedDetection"></div>
-      </div>
-    </div>
-
-    <div class="settings-card">
-      <h2>📝 Whitelist Management</h2>
-      <div class="section-description">
-        Sites in your whitelist will automatically have copy restrictions removed without manual intervention. Add trusted domains to improve your browsing experience.
-      </div>
-      
-      <div class="whitelist-input-group">
-        <input type="text" class="whitelist-input" id="whitelistInput" placeholder="Enter domain (e.g., example.com)" autocomplete="off">
-        <button class="add-btn" id="addWhitelist">Add Site</button>
-      </div>
-
-      <div class="whitelist-items" id="whitelistItems">
-        <div class="empty-state">No whitelisted sites yet. Add domains above to get started.</div>
-      </div>
-    </div>
-
-    <div class="settings-card">
-      <h2>📊 Usage Statistics</h2>
-      <div class="section-description">
-        Track your extension usage and see how many sites attempt to block copying. All data is stored locally and never shared.
-      </div>
-      <div class="stats-grid" id="statsGrid">
-        <div class="stat-card">
-          <div class="stat-number">0</div>
-          <div class="stat-label">Sites Analyzed</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-number">0</div>
-          <div class="stat-label">Restrictions Found</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-number">0%</div>
-          <div class="stat-label">Success Rate</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-number">0</div>
-          <div class="stat-label">Whitelisted Sites</div>
+        <div class="setting-item">
+          <div class="setting-info">
+            <div class="setting-title">Advanced detection</div>
+            <div class="setting-description">Enable deep scanning for sophisticated blocking methods and tracking</div>
+          </div>
+          <div class="toggle-switch" id="advancedDetection"></div>
         </div>
       </div>
-    </div>
 
-    <div class="settings-card">
-      <h2>💾 Data Management</h2>
-      <div class="section-description">
-        Export your settings for backup or import from a previous backup. Keep your preferences synchronized across devices.
-      </div>
-      
-      <button class="export-btn" id="exportSettings">📤 Export Settings</button>
-      <button class="import-btn" id="importBtn">📥 Import Settings</button>
-      <input type="file" class="file-input" id="importFile" accept=".json">
-    </div>
+      <!-- Whitelist Management Card -->
+      <div class="settings-card">
+        <div class="card-header">
+          <h2>📝 Whitelist Management</h2>
+          <p>Sites in your whitelist will automatically have copy restrictions removed without manual intervention</p>
+        </div>
+        
+        <div class="whitelist-input-group">
+          <input type="text" class="whitelist-input" id="whitelistInput" 
+                 placeholder="Enter domain (e.g., example.com)" autocomplete="off">
+          <button class="add-btn" id="addWhitelist">
+            <span>Add Site</span>
+          </button>
+        </div>
 
-    <div class="settings-card danger-zone">
-      <h2>⚠️ Danger Zone</h2>
-      <div class="section-description">
-        These actions cannot be undone. Please proceed with caution.
+        <div class="whitelist-container">
+          <div class="whitelist-items" id="whitelistItems">
+            <div class="empty-state">
+              <div class="empty-icon">🌊</div>
+              <div class="empty-text">No whitelisted sites yet</div>
+              <div class="empty-subtext">Add domains above to get started</div>
+            </div>
+          </div>
+        </div>
       </div>
-      
-      <div class="advanced-section">
-        <button class="reset-btn" id="resetSettings">🔄 Reset All Settings</button>
+
+      <!-- Usage Statistics Card -->
+      <div class="settings-card">
+        <div class="card-header">
+          <h2>📊 Usage Statistics</h2>
+          <p>Track your extension usage and see how many sites attempt to block copying</p>
+        </div>
+        
+        <div class="stats-grid" id="statsGrid">
+          <div class="stat-card">
+            <div class="stat-icon">🔍</div>
+            <div class="stat-number">0</div>
+            <div class="stat-label">Sites Analyzed</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">🚫</div>
+            <div class="stat-number">0</div>
+            <div class="stat-label">Restrictions Found</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">✅</div>
+            <div class="stat-number">0%</div>
+            <div class="stat-label">Success Rate</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">⭐</div>
+            <div class="stat-number">0</div>
+            <div class="stat-label">Whitelisted Sites</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Data Management Card -->
+      <div class="settings-card">
+        <div class="card-header">
+          <h2>💾 Data Management</h2>
+          <p>Export your settings for backup or import from a previous backup</p>
+        </div>
+        
+        <div class="button-group">
+          <button class="action-btn export-btn" id="exportSettings">
+            <span class="btn-icon">📤</span>
+            <span>Export Settings</span>
+          </button>
+          <button class="action-btn import-btn" id="importBtn">
+            <span class="btn-icon">📥</span>
+            <span>Import Settings</span>
+          </button>
+        </div>
+        
+        <input type="file" class="file-input" id="importFile" accept=".json">
+      </div>
+
+      <!-- Danger Zone Card -->
+      <div class="settings-card danger-zone">
+        <div class="card-header">
+          <h2>⚠️ Danger Zone</h2>
+          <p>These actions cannot be undone. Please proceed with caution.</p>
+        </div>
+        
+        <button class="action-btn reset-btn" id="resetSettings">
+          <span class="btn-icon">🔄</span>
+          <span>Reset All Settings</span>
+        </button>
       </div>
     </div>
   </div>
 
+  <!-- Toast Notification -->
   <div class="toast" id="toast"></div>
 
-  <script>
-    class OptionsManager {
-      constructor() {
-        this.settings = {
-          autoEnable: false,
-          showNotifications: true,
-          trackingAlerts: true,
-          allFrames: true,
-          advancedDetection: false,
-          whitelist: []
-        };
-        this.init();
-      }
-
-      init() {
-        this.loadSettings();
-        this.setupEventListeners();
-        this.loadStats();
-        this.setupKeyboardShortcuts();
-      }
-
-      loadSettings() {
-        chrome.storage.sync.get('copyBlockSettings', (data) => {
-          if (data.copyBlockSettings) {
-            this.settings = { ...this.settings, ...data.copyBlockSettings };
-          }
-          this.updateUI();
-        });
-      }
-
-      saveSettings() {
-        chrome.storage.sync.set({ copyBlockSettings: this.settings }, () => {
-          this.showToast('Settings saved successfully', 'success');
-          chrome.runtime.sendMessage({ type: 'UPDATE_SETTINGS', settings: this.settings });
-        });
-      }
-
-      updateUI() {
-        // Update toggles
-        Object.keys(this.settings).forEach(key => {
-          const element = document.getElementById(key);
-          if (element && typeof this.settings[key] === 'boolean') {
-            element.classList.toggle('active', this.settings[key]);
-          }
-        });
-
-        // Update whitelist
-        this.updateWhitelistUI();
-      }
-
-      updateWhitelistUI() {
-        const container = document.getElementById('whitelistItems');
-        
-        if (this.settings.whitelist.length === 0) {
-          container.innerHTML = '<div class="empty-state">No whitelisted sites yet. Add domains above to get started.</div>';
-          return;
-        }
-
-        container.innerHTML = '';
-        this.settings.whitelist.forEach((domain, index) => {
-          const item = document.createElement('div');
-          item.className = 'whitelist-item';
-          item.innerHTML = `
-            <div>
-              <strong>${domain}</strong>
-              <div style="font-size: 12px; color: #718096; margin-top: 2px;">Added on ${new Date().toLocaleDateString()}</div>
-            </div>
-            <button class="remove-btn" onclick="optionsManager.removeFromWhitelist(${index})">Remove</button>
-          `;
-          container.appendChild(item);
-        });
-      }
-
-      setupEventListeners() {
-        // Toggle switches
-        ['autoEnable', 'showNotifications', 'trackingAlerts', 'allFrames', 'advancedDetection'].forEach(id => {
-          document.getElementById(id).addEventListener('click', (e) => {
-            e.target.classList.toggle('active');
-            this.settings[id] = e.target.classList.contains('active');
-            this.saveSettings();
-          });
-        });
-
-        // Whitelist management
-        document.getElementById('addWhitelist').addEventListener('click', () => {
-          this.addToWhitelist();
-        });
-
-        document.getElementById('whitelistInput').addEventListener('keypress', (e) => {
-          if (e.key === 'Enter') {
-            this.addToWhitelist();
-          }
-        });
-
-        // Data management
-        document.getElementById('exportSettings').addEventListener('click', () => {
-          this.exportSettings();
-        });
-
-        document.getElementById('importBtn').addEventListener('click', () => {
-          document.getElementById('importFile').click();
-        });
-
-        document.getElementById('importFile').addEventListener('change', (e) => {
-          this.importSettings(e.target.files[0]);
-        });
-
-        document.getElementById('resetSettings').addEventListener('click', () => {
-          this.resetSettings();
-        });
-      }
-
-      setupKeyboardShortcuts() {
-        document.addEventListener('keydown', (e) => {
-          if (e.ctrlKey || e.metaKey) {
-            switch (e.key) {
-              case 's':
-                e.preventDefault();
-                this.saveSettings();
-                break;
-              case 'e':
-                e.preventDefault();
-                this.exportSettings();
-                break;
-            }
-          }
-        });
-      }
-
-      addToWhitelist() {
-        const input = document.getElementById('whitelistInput');
-        const domain = input.value.trim().toLowerCase();
-
-        if (!domain) {
-          this.showToast('Please enter a domain', 'error');
-          return;
-        }
-
-        // Enhanced domain validation
-        if (!/^[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(domain)) {
-          this.showToast('Please enter a valid domain (e.g., example.com)', 'error');
-          return;
-        }
-
-        if (this.settings.whitelist.includes(domain)) {
-          this.showToast('Domain already in whitelist', 'error');
-          return;
-        }
-
-        this.settings.whitelist.push(domain);
-        input.value = '';
-        this.updateWhitelistUI();
-        this.saveSettings();
-        this.showToast(`Added ${domain} to whitelist`, 'success');
-      }
-
-      removeFromWhitelist(index) {
-        const domain = this.settings.whitelist[index];
-        this.settings.whitelist.splice(index, 1);
-        this.updateWhitelistUI();
-        this.saveSettings();
-        this.showToast(`Removed ${domain} from whitelist`, 'success');
-      }
-
-      loadStats() {
-        chrome.runtime.sendMessage({ type: 'GET_STATS' }, (stats) => {
-          if (stats) {
-            this.displayStats(stats);
-          }
-        });
-      }
-
-      displayStats(stats) {
-        const container = document.getElementById('statsGrid');
-        const successRate = stats.totalSitesChecked > 0 ? 
-          Math.round(((stats.sitesWithBlocking || 0) / stats.totalSitesChecked) * 100) : 0;
-        
-        container.innerHTML = `
-          <div class="stat-card">
-            <div class="stat-number">${stats.totalSitesChecked || 0}</div>
-            <div class="stat-label">Sites Analyzed</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-number">${stats.sitesWithBlocking || 0}</div>
-            <div class="stat-label">Restrictions Found</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-number">${successRate}%</div>
-            <div class="stat-label">Detection Rate</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-number">${this.settings.whitelist.length}</div>
-            <div class="stat-label">Whitelisted Sites</div>
-          </div>
-        `;
-      }
-
-      exportSettings() {
-        const exportData = {
-          ...this.settings,
-          exportDate: new Date().toISOString(),
-          version: '2.0.0'
-        };
-        
-        const dataStr = JSON.stringify(exportData, null, 2);
-        const dataBlob = new Blob([dataStr], { type: 'application/json' });
-        const url = URL.createObjectURL(dataBlob);
-        
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = `copyblock-settings-${new Date().toISOString().split('T')[0]}.json`;
-        link.click();
-        
-        URL.revokeObjectURL(url);
-        this.showToast('Settings exported successfully', 'success');
-      }
-
-      importSettings(file) {
-        if (!file) return;
-
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          try {
-            const importedData = JSON.parse(e.target.result);
-            
-            // Validate settings structure
-            if (typeof importedData !== 'object') {
-              throw new Error('Invalid settings format');
-            }
-
-            // Merge settings, preserving structure
-            const validKeys = Object.keys(this.settings);
-            const filteredSettings = {};
-            
-            validKeys.forEach(key => {
-              if (importedData.hasOwnProperty(key)) {
-                filteredSettings[key] = importedData[key];
-              }
-            });
-
-            this.settings = { ...this.settings, ...filteredSettings };
-            this.updateUI();
-            this.saveSettings();
-            this.showToast(`Settings imported successfully! Imported ${Object.keys(filteredSettings).length} settings.`, 'success');
-          } catch (error) {
-            this.showToast(`Error importing settings: ${error.message}`, 'error');
-          }
-        };
-        reader.readAsText(file);
-      }
-
-      resetSettings() {
-        if (confirm('Are you sure you want to reset all settings? This action cannot be undone.')) {
-          this.settings = {
-            autoEnable: false,
-            showNotifications: true,
-            trackingAlerts: true,
-            allFrames: true,
-            advancedDetection: false,
-            whitelist: []
-          };
-          this.updateUI();
-          this.saveSettings();
-          this.showToast('All settings have been reset to defaults', 'success');
-        }
-      }
-
-      showToast(message, type = 'success') {
-        const toast = document.getElementById('toast');
-        toast.textContent = message;
-        toast.className = `toast ${type} show`;
-        
-        setTimeout(() => {
-          toast.classList.remove('show');
-        }, 4000);
-      }
-    }
-
-    // Initialize options manager
-    const optionsManager = new OptionsManager();
-
-    // Add some nice animations on load
-    document.addEventListener('DOMContentLoaded', () => {
-      const cards = document.querySelectorAll('.settings-card');
-      cards.forEach((card, index) => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(20px)';
-        setTimeout(() => {
-          card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-          card.style.opacity = '1';
-          card.style.transform = 'translateY(0)';
-        }, index * 100);
-      });
-    });
-  </script>
+  <script src="options.js"></script>
 </body>
 </html>
